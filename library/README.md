@@ -16,7 +16,7 @@ building.
 | Formatting | ruff format |
 | Linting | ruff check + basedpyright |
 | Tests | pytest + pytest-cov |
-| CI | GitHub Actions → `prefeitura-rio/actions/quality-gate@latest` |
+| CI | GitHub Actions → `prefeitura-rio/actions/quality-gate@master` |
 
 ## Project structure
 

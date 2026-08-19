@@ -15,7 +15,7 @@ this directory into a new repository root and start building.
 | Formatting | ruff format |
 | Linting | ruff check + basedpyright |
 | Tests | pytest + pytest-asyncio + httpx |
-| CI | GitHub Actions → `prefeitura-rio/actions/quality-gate@latest` |
+| CI | GitHub Actions → `prefeitura-rio/actions/quality-gate@master` |
 
 ## Project structure
 
