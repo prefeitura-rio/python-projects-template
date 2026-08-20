@@ -98,8 +98,6 @@ class Settings(BaseSettings):
     database_url: str = "postgresql://localhost/mydb"
 ```
 
-Copy `.env.example` to `.env` for local overrides (`.env` is gitignored).
-
 ## CI pipeline
 
 Five jobs run on every push and pull request to `main`:
