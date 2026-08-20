@@ -114,3 +114,24 @@ typecheck┘
 `format`, `lint`, `strlint`, and `typecheck` run in parallel. `test` runs
 only after all four pass. The `typecheck` job is a no-op for Python — type
 checking is handled by basedpyright inside the `lint` job.
+
+## Security scanning (SAST)
+
+In addition to the quality gate, `.github/workflows/sast.yaml` runs security
+scanning (opengrep, grype/SBOM, checkov, SonarQube) by calling the org reusable
+workflow `prefeitura-rio/actions/.github/workflows/sast.yml`.
+
+The workflow requires the following secrets and variables at the repository or
+organization level:
+
+| Name | Type | Purpose |
+|---|---|---|
+| `SONAR_HOST_URL` | Variable | SonarQube server URL |
+| `SONAR_TOKEN` | Secret | SonarQube access token |
+| `DD_TOKEN` | Secret | DefectDojo API token |
+| `TS_TAGS` | Secret | Tailscale tags for the runner |
+| `TS_OAUTH_CLIENT_ID` | Secret | Tailscale OAuth client ID |
+| `TS_OAUTH_SECRET` | Secret | Tailscale OAuth client secret |
+
+Until these exist, the `sast` job will fail — configure them before enabling
+the workflow.
