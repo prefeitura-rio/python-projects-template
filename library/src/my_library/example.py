@@ -1,10 +1,4 @@
-"""Placeholder module — replace with actual library code.
-
-This file demonstrates:
-  - Full type annotations on function signatures.
-  - A concise docstring (summary line + parameter/return descriptions).
-  - A pure function with no side effects (easy to test in isolation).
-"""
+"""Example library module."""
 
 
 def add(a: int, b: int) -> int:

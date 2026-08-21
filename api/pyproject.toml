@@ -35,8 +35,7 @@ venv = ".venv"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-# asyncio_mode = "auto" makes every async def test_* run without the
-# @pytest.mark.asyncio decorator — required by pytest-asyncio.
+pythonpath = ["src"]
 asyncio_mode = "auto"
 
 [tool.coverage.run]

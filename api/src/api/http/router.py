@@ -1,9 +1,4 @@
-"""Top-level API router.
-
-All sub-routers are included here and then registered on the FastAPI app in
-main.py. Adding a new feature group means: create a handler module, define a
-router there, and include it below.
-"""
+"""Top-level API router."""
 
 from fastapi import APIRouter
 

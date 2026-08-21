@@ -1,15 +1,4 @@
-"""Application entry point.
-
-The app factory pattern (create_app) mirrors Fastify's createServer() in the
-TypeScript template:
-  - create_app() constructs and configures the FastAPI application.
-  - The module-level `app` is used by uvicorn in production.
-  - Tests call create_app() directly and pass the result to AsyncClient,
-    so no real TCP port is ever bound during testing.
-
-Run locally:
-    uv run uvicorn api.main:app --reload
-"""
+"""Application entry point and factory."""
 
 from fastapi import FastAPI
 
@@ -23,6 +12,4 @@ def create_app() -> FastAPI:
     return app
 
 
-# Module-level instance used by uvicorn:
-#   uv run uvicorn api.main:app --reload
 app = create_app()

@@ -82,6 +82,7 @@ TCP port is ever bound during testing:
 from httpx import ASGITransport, AsyncClient
 from api.main import create_app
 
+
 async def test_my_endpoint(client: AsyncClient) -> None:
     response = await client.get("/my-endpoint")
     assert response.status_code == 200

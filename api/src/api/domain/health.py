@@ -4,8 +4,6 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-# A union of the valid status strings. Using Literal restricts the field to
-# exactly these values and makes the OpenAPI schema an enum automatically.
 HealthStatus = Literal["ok", "degraded", "down"]
 
 

@@ -1,12 +1,4 @@
-"""Application configuration.
-
-Settings are read from environment variables using pydantic-settings.
-Add a new field here to expose a new environment variable to the application.
-
-Example usage:
-    from api.config import settings
-    print(settings.app_env)
-"""
+"""Application configuration."""
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -19,5 +11,4 @@ class Settings(BaseSettings):
     app_port: int = 8000
 
 
-# Module-level singleton — import this in handlers and services.
 settings = Settings()
