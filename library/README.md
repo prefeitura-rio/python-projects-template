@@ -34,29 +34,26 @@ the installed package, which avoids subtle import bugs during testing.
 
 ## How to use
 
-1. Copy this directory into a new, empty repository:
-   ```bash
-   cp -r python-projects-template/library/. my-library/
-   cd my-library
-   ```
-2. Rename the package:
-   - Rename `src/my_library/` to `src/<your_package_name>/`.
-   - Update `name` in `pyproject.toml` (use `my-library` convention for PyPI).
-   - Update `[tool.hatch.build.targets.wheel] packages` in `pyproject.toml`.
-   - Update `name` in `devenv.nix`.
-   - Update imports in `src/<your_package_name>/__init__.py`.
-3. Bootstrap the dev environment:
-   ```bash
-   bash scripts/bootstrap.sh
-   # Open a new terminal, then:
-   devenv allow
-   ```
-4. Verify everything works:
-   ```bash
-   uv run pytest
-   uv run ruff check .
-   uv run ruff format --check .
-   ```
+Copy this directory into a new, empty repository and run the bootstrap script:
+
+```bash
+cp -r python-projects-template/library/. my-library/
+cd my-library
+bash scripts/bootstrap.sh
+```
+
+The script prompts for the project name, derives the Python package name, renames
+`src/my_library/`, updates the Hatch package path and project metadata, installs
+the development environment, and trusts the project automatically. Open a
+**new terminal** after the script finishes.
+
+Verify everything works:
+
+```bash
+uv run pytest
+uv run ruff check .
+uv run ruff format --check .
+```
 
 ## Publishing to PyPI
 

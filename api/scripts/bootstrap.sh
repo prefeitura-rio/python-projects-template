@@ -15,6 +15,80 @@ note() {
   echo "  [note] $*"
 }
 
+die() {
+  echo "Error: $*" >&2
+  exit 1
+}
+
+require_interactive() {
+  if [[ ! -t 0 || ! -t 1 ]]; then
+    die "project initialization requires an interactive terminal"
+  fi
+}
+
+confirm_initialization() {
+  local answer
+  read -r -p "  Apply these changes? [Y/n] " answer
+  if [[ -n "$answer" && ! "$answer" =~ ^[Yy]$ ]]; then
+    die "project initialization cancelled"
+  fi
+}
+
+initialize_project() {
+  local project_name
+  local snake_name
+
+  if ! grep -q 'name = "api"' pyproject.toml; then
+    return
+  fi
+
+  require_interactive
+
+  [[ -f pyproject.toml && -f devenv.nix && -d src/api ]] || die "template API files are missing"
+
+  read -r -p "Project name: " project_name
+  [[ "$project_name" =~ ^[A-Za-z0-9]+([._-][A-Za-z0-9]+)*$ ]] || die "project name must use letters, numbers, dots, underscores, or hyphens"
+  [[ "$project_name" != "api" ]] || die "project name cannot be the template placeholder"
+
+  snake_name="${project_name,,}"
+  snake_name="${snake_name//-/_}"
+  snake_name="${snake_name//./_}"
+  [[ "$snake_name" =~ ^[a-z][a-z0-9_]*$ ]] || die "project name must derive a valid Python package name"
+  case "$snake_name" in
+    and|as|assert|async|await|break|case|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|match|None|nonlocal|not|or|pass|raise|return|True|try|type|while|with|yield)
+      die "project name derives a Python keyword and cannot be used as a package name"
+      ;;
+  esac
+  [[ ! -e "src/$snake_name" ]] || die "target Python package directory already exists"
+
+  echo ""
+  echo "Initializing project from template..."
+  echo ""
+  echo "  Project name : $project_name"
+  echo "  Python package: $snake_name"
+  echo ""
+  echo "  Changes to apply:"
+  echo "    rename  src/api/             -> src/$snake_name/"
+  echo "    update  pyproject.toml       (name)"
+  echo "    update  devenv.nix            (name)"
+  echo "    update  src/ and tests/       (imports)"
+
+  confirm_initialization
+
+  mv src/api "src/$snake_name"
+  sed -i "s|name = \"api\"|name = \"$project_name\"|g" pyproject.toml devenv.nix
+  for root in src tests; do
+    if [[ -d "$root" ]]; then
+      while IFS= read -r -d '' file; do
+        sed -i -e "s|from api\.|from $snake_name.|g" -e "s|import api\.|import $snake_name.|g" "$file"
+      done < <(find "$root" -type f -name '*.py' -print0)
+    fi
+  done
+  ok "Project initialized"
+}
+
+initialize_project
+
 step "Checking for Nix..."
 
 if command -v nix &>/dev/null; then
@@ -86,19 +160,17 @@ elif [ -z "$HOOK_SNIPPET" ] && [ "$SHELL_NAME" != "fish" ] && [ "$SHELL_NAME" !=
   note "Add the devenv hook manually: https://devenv.sh/auto-activation/"
 fi
 
+step "Trusting devenv project..."
+devenv allow
+ok "devenv project trusted"
+
 echo ""
 echo "============================================================"
 echo " Bootstrap complete!"
 echo "============================================================"
 echo ""
-echo " Next steps:"
-echo ""
-echo "   1. Open a new terminal (so the shell hook takes effect)"
-echo "   2. Navigate to this repository"
-echo "   3. Run: devenv allow"
-echo ""
-echo " After step 3, the environment activates automatically"
-echo " every time you cd into this directory."
+echo " Open a new terminal. The environment activates automatically"
+echo " when you navigate to this directory."
 echo " Python 3.13 and uv will be available, and uv sync"
 echo " will run automatically to set up the virtual environment."
 echo ""

@@ -54,26 +54,21 @@ workflow `prefeitura-rio/actions/.github/workflows/sast.yml`. See
 
 ## How to use a template
 
-1. Copy the template subdirectory into a new, empty repository:
-   ```bash
-   cp -r python-projects-template/api/. my-new-api/
-   cd my-new-api
-   ```
-2. Update `name` in `pyproject.toml` and `devenv.nix`.
-3. For the library template, also rename `src/my_library/` and update
-   `[tool.hatch.build.targets.wheel] packages` in `pyproject.toml`.
-4. Bootstrap the dev environment:
-   ```bash
-   bash scripts/bootstrap.sh
-   # Open a new terminal, then:
-   devenv allow
-   ```
-5. Verify everything works:
-   ```bash
-   uv run pytest
-   uv run ruff check .
-   uv run ruff format --check .
-   ```
+Copy the desired template subdirectory into a new, empty repository and run its
+bootstrap script. For example:
+
+```bash
+cp -r python-projects-template/api/. my-new-api/
+cd my-new-api
+bash scripts/bootstrap.sh
+```
+
+The script prompts for the project name, derives Python package names where
+needed, performs the renames and substitutions, installs the development
+environment, and trusts the project automatically. Open a **new terminal** after
+the script finishes.
+
+Follow the template-specific README for verification commands.
 
 ## Template-specific docs
 
