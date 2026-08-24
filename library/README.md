@@ -50,23 +50,23 @@ the development environment, and trusts the project automatically. Open a
 Verify everything works:
 
 ```bash
-devenv run app:test
-devenv run app:lint:check
-devenv run app:format:check
+devenv tasks run app:test
+devenv tasks run app:lint:check
+devenv tasks run app:format:check
 ```
 
 ## Running quality checks locally
 
-devenv tasks wrap the same tools CI uses. Run them with `devenv run`:
+devenv tasks wrap the same tools CI uses. Run them with `devenv tasks run`:
 
 ```bash
-devenv run app:format           # ruff format .
-devenv run app:format:check     # ruff format --check .
-devenv run app:lint             # ruff check --fix + basedpyright
-devenv run app:lint:check       # ruff check + basedpyright
-devenv run app:strlint          # ast-grep scan
-devenv run app:typecheck        # no-op (covered by app:lint)
-devenv run app:test             # pytest
+devenv tasks run app:format           # ruff format .
+devenv tasks run app:format:check     # ruff format --check .
+devenv tasks run app:lint             # ruff check --fix + basedpyright
+devenv tasks run app:lint:check       # ruff check + basedpyright
+devenv tasks run app:strlint           # ast-grep scan
+devenv tasks run app:typecheck         # no-op (covered by app:lint)
+devenv tasks run app:test              # pytest
 ```
 
 ## Publishing to PyPI
