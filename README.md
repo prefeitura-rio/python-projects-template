@@ -21,7 +21,7 @@ the other:
 | Language | Python 3.13 |
 | Package manager | uv (replaces pip, virtualenv, pip-tools) |
 | Dev environment | devenv (Nix-based, reproducible) |
-| Git hooks | `ripsecrets` + `no-commit-to-branch` |
+| Git hooks | `ripsecrets` + `no-commit-to-branch` + format/lint/strlint (pre-commit) + typecheck/test (pre-push) |
 | Formatting | ruff format |
 | Linting | ruff check + basedpyright |
 | Structural linting | ast-grep (org-wide rules via `quality-gate`) |

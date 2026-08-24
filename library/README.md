@@ -12,7 +12,7 @@ building.
 | Package manager | uv |
 | Build backend | hatchling (PEP 517-compliant) |
 | Dev environment | devenv (Nix-based, reproducible) |
-| Git hooks | `ripsecrets` + `no-commit-to-branch` |
+| Git hooks | `ripsecrets` + `no-commit-to-branch` + format/lint/strlint (pre-commit) + typecheck/test (pre-push) |
 | Formatting | ruff format |
 | Linting | ruff check + basedpyright |
 | Tests | pytest + pytest-cov |
@@ -50,9 +50,23 @@ the development environment, and trusts the project automatically. Open a
 Verify everything works:
 
 ```bash
-uv run pytest
-uv run ruff check .
-uv run ruff format --check .
+devenv run app:test
+devenv run app:lint:check
+devenv run app:format:check
+```
+
+## Running quality checks locally
+
+devenv tasks wrap the same tools CI uses. Run them with `devenv run`:
+
+```bash
+devenv run app:format           # ruff format .
+devenv run app:format:check     # ruff format --check .
+devenv run app:lint             # ruff check --fix + basedpyright
+devenv run app:lint:check       # ruff check + basedpyright
+devenv run app:strlint          # ast-grep scan
+devenv run app:typecheck        # no-op (covered by app:lint)
+devenv run app:test             # pytest
 ```
 
 ## Publishing to PyPI
