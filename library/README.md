@@ -43,7 +43,8 @@ bash scripts/bootstrap.sh
 ```
 
 The script prompts for the project name, derives the Python package name, renames
-`src/my_library/`, updates the Hatch package path and project metadata, installs
+`src/my_library/`, rewrites the `my_library` imports in `src/` and `tests/`,
+updates the Hatch package path and project metadata, installs
 the development environment, and trusts the project automatically. Open a
 **new terminal** after the script finishes.
 

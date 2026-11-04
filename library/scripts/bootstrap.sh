@@ -71,6 +71,7 @@ initialize_project() {
   echo "    rename  src/my_library/     -> src/$snake_name/"
   echo "    update  pyproject.toml      (name + package path)"
   echo "    update  devenv.nix           (name)"
+  echo "    update  src/ and tests/      (imports)"
 
   confirm_initialization
 
@@ -78,6 +79,13 @@ initialize_project() {
   sed -i "s|name = \"my-library\"|name = \"$project_name\"|" pyproject.toml
   sed -i "s|src/my_library|src/$snake_name|" pyproject.toml
   sed -i "s|name = \"library\"|name = \"$project_name\"|" devenv.nix
+  for root in src tests; do
+    if [[ -d "$root" ]]; then
+      while IFS= read -r -d '' file; do
+        sed -i "s|\bmy_library\b|$snake_name|g" "$file"
+      done < <(find "$root" -type f -name '*.py' -print0)
+    fi
+  done
   ok "Project initialized"
 }
 
