@@ -37,6 +37,7 @@ confirm_initialization() {
 initialize_project() {
   local project_name
   local snake_name
+  local lock_name
 
   if ! grep -q 'name = "api"' pyproject.toml; then
     return
@@ -44,7 +45,7 @@ initialize_project() {
 
   require_interactive
 
-  [[ -f pyproject.toml && -f devenv.nix && -d src/api ]] || die "template API files are missing"
+  [[ -f pyproject.toml && -f devenv.nix && -f uv.lock && -d src/api ]] || die "template API files are missing"
 
   read -r -p "Project name: " project_name
   [[ "$project_name" =~ ^[A-Za-z0-9]+([._-][A-Za-z0-9]+)*$ ]] || die "project name must use letters, numbers, dots, underscores, or hyphens"
@@ -60,6 +61,8 @@ initialize_project() {
       ;;
   esac
   [[ ! -e "src/$snake_name" ]] || die "target Python package directory already exists"
+  lock_name="${project_name,,}"
+  lock_name="${lock_name//[._]/-}"
 
   echo ""
   echo "Initializing project from template..."
@@ -71,12 +74,14 @@ initialize_project() {
   echo "    rename  src/api/             -> src/$snake_name/"
   echo "    update  pyproject.toml       (name)"
   echo "    update  devenv.nix            (name)"
+  echo "    update  uv.lock               (name)"
   echo "    update  src/ and tests/       (imports)"
 
   confirm_initialization
 
   mv src/api "src/$snake_name"
   sed -i "s|name = \"api\"|name = \"$project_name\"|g" pyproject.toml devenv.nix
+  sed -i "s|^name = \"api\"$|name = \"$lock_name\"|" uv.lock
   for root in src tests; do
     if [[ -d "$root" ]]; then
       while IFS= read -r -d '' file; do

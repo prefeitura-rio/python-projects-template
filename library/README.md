@@ -44,9 +44,9 @@ bash scripts/bootstrap.sh
 
 The script prompts for the project name, derives the Python package name, renames
 `src/my_library/`, rewrites the `my_library` imports in `src/` and `tests/`,
-updates the Hatch package path and project metadata, installs
-the development environment, and trusts the project automatically. Open a
-**new terminal** after the script finishes.
+updates the Hatch package path, project metadata, and the `uv.lock` project
+entry, installs the development environment, and trusts the project
+automatically. Open a **new terminal** after the script finishes.
 
 Verify everything works:
 

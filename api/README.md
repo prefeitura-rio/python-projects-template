@@ -51,9 +51,9 @@ bash scripts/bootstrap.sh
 ```
 
 The script prompts for the project name, derives the Python package name, renames
-`src/api/`, updates imports and project metadata, installs the development
-environment, and trusts the project automatically. Open a **new terminal** after
-the script finishes.
+`src/api/`, updates imports, project metadata, and the `uv.lock` project entry,
+installs the development environment, and trusts the project automatically.
+Open a **new terminal** after the script finishes.
 
 Verify everything works:
 
