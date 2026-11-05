@@ -2,6 +2,7 @@
 
 Publishable PyPI package (Python 3.13, uv, hatchling). See `README.md` for the
 stack and the project structure.
+Code conventions (layout, naming, docstrings, tests) are in `STYLEGUIDE.md`.
 
 Run every command from this directory, the project root (`library/` inside
 `python-projects-template`).
