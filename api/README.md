@@ -80,8 +80,11 @@ devenv tasks run app:test              # pytest
 ## Running locally
 
 ```bash
-uv run uvicorn api.main:app --reload
+uv run --frozen uvicorn api.main:app --app-dir src --reload
 ```
+
+The project is not installed as a package, so `--app-dir src` is required for
+uvicorn to import `api` from `src/`.
 
 The API is now available at `http://localhost:8000`. Swagger UI is at
 `http://localhost:8000/docs`.
