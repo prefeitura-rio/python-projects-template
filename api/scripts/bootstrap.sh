@@ -75,7 +75,7 @@ initialize_project() {
   echo "    update  pyproject.toml       (name)"
   echo "    update  devenv.nix            (name)"
   echo "    update  uv.lock               (name)"
-  echo "    update  src/ and tests/       (imports)"
+  echo "    update  src/ and tests/       (package references)"
 
   confirm_initialization
 
@@ -85,7 +85,10 @@ initialize_project() {
   for root in src tests; do
     if [[ -d "$root" ]]; then
       while IFS= read -r -d '' file; do
-        sed -i -e "s|from api\.|from $snake_name.|g" -e "s|import api\.|import $snake_name.|g" "$file"
+        sed -i -E \
+          -e "s/(^|[^[:alnum:]_./-])api\.([A-Za-z_])/\1$snake_name.\2/g" \
+          -e "s/\b(from|import) api\b/\1 $snake_name/g" \
+          "$file"
       done < <(find "$root" -type f -name '*.py' -print0)
     fi
   done
